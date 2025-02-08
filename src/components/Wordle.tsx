@@ -4,13 +4,13 @@ type WordleProps = {
   solution: string;
 };
 const Wordle = ({ solution }: WordleProps) => {
-  const { currentGuess, handleKeyup } = useWorlde();
+  const { currentGuess, handleKeyup } = useWorlde(solution);
   useEffect(() => {
     document.addEventListener("keyup", handleKeyup);
     return () => document.removeEventListener("keyup", handleKeyup);
   }, [handleKeyup]);
 
-  return <div>current guess is {currentGuess}</div>;
+  return <div>current {solution} guess is {currentGuess}</div>;
 };
 
 export default Wordle;
