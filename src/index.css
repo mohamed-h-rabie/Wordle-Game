@@ -33,18 +33,79 @@ h1 {
   align-items: center;
   text-transform: uppercase;
 }
+
 .word-box > .green {
-  background-color: #6aaa64;
-  border-color: #6aaa64;
+  --background-color: #6aaa64;
+  --border-color: #6aaa64;
   color: white;
+  animation: flib 0.5s ease forwards;
 }
 .word-box > .yellow {
-  background-color: #c9b458;
-  border-color: #c9b458;
+  --background-color: #c9b458;
+  --border-color: #c9b458;
   color: white;
+  animation: flib 0.5s ease forwards;
 }
 .word-box > .grey {
-  background-color: #787c7e;
-  border-color: #787c7e;
+  --background-color: #787c7e;
+  --border-color: #787c7e;
   color: white;
+  animation: flib 0.5s ease forwards;
+}
+.word-box > div:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.word-box > div:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.word-box > div:nth-child(4) {
+  animation-delay: 0.9s;
+}
+.word-box > div:nth-child(5) {
+  animation-delay: 1.2s;
+}
+
+@keyframes flib {
+  0% {
+    transform: rotatex(0);
+    background-color: white;
+    border-color: #d3d6da;
+  }
+  45% {
+    transform: rotateX(90deg);
+    background-color: white;
+    border-color: #d3d6da;
+  }
+  55% {
+    transform: rotateX(90deg);
+    background-color: var(--background-color);
+    border-color: var(--border-color);
+  }
+  100% {
+    transform: rotatex(0);
+    background-color: var(--background-color);
+    border-color: var(--border-color);
+  }
+}
+
+.current {
+  border-color: #878a8c !important;
+  animation: zoom 0.15s ease forwards;
+}
+.word-box > .current {
+  animation-delay: 0s !important;
+}
+@keyframes zoom {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.2);
+  }
+  55% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
