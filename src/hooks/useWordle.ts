@@ -1,39 +1,58 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
-// type Guess = {
-//   key: string;
-//   color: string;
-// };
+type Guess = {
+  letter: string;
+  color: string;
+};
 export const useWorlde = (solution: any) => {
   const [currentGuess, setCurrentGuess] = useState("");
   const [turn, setTurn] = useState(0);
-  const [historyGusses, setHistoryGusses] = useState<string[]>(["hello"]);
-  //   const [gusses, setGuesses] = useState<Guess[]>([]);
-
+  const [historyGusses, setHistoryGusses] = useState<string[]>([]);
+  const [gusses, setGuesses] = useState<Guess[][]>(
+    [...Array(5)].map(() => Array(5).fill({ letter: "", color: "" }))
+  );
+  const [isCorrect, setIsCorrect] = useState(false);
   const formatWord = () => {
     console.log(`Your current Guess is ${currentGuess}`);
     const formatedSolution = [...solution];
-    const foramtedGuess = [...currentGuess].map((l) => {
-      return { key: l, color: "grey" };
+    const formatedGuess = [...currentGuess].map((letter) => {
+      return { letter, color: "grey" };
     });
-    foramtedGuess.forEach((l, i) => {
-      if (formatedSolution[i] === l.key) {
-        foramtedGuess[i].color = "green";
-        formatedSolution[i] = null;
+
+    formatedGuess.forEach((letter, index) => {
+      if (letter.letter === formatedSolution[index]) {
+        letter.color = "green";
+        formatedSolution[index] = null;
       }
     });
-    foramtedGuess.forEach((l, i) => {
-      if (formatedSolution.includes(l.key) && l.color !== "green") {
-        foramtedGuess[i].color = "yellow";
-        formatedSolution[formatedSolution.indexOf(l.key)] = null;
-        console.log(formatedSolution[formatedSolution.indexOf(l.key)]);
+    formatedGuess.forEach((letter) => {
+      if (
+        formatedSolution.includes(letter.letter) &&
+        letter.color !== "greeen"
+      ) {
+        letter.color = "yellow";
+        formatedSolution[formatedSolution.indexOf(letter.letter)] = null;
       }
     });
-    console.log(foramtedGuess, formatedSolution);
+
+    return formatedGuess;
+  };
+  const addNewGuesses = (formatedGuess: Guess[]) => {
+    if (currentGuess === solution) {
+      setIsCorrect(true);
+    }
+    setGuesses((prevGuesses) => {
+      const newGuesses = [...prevGuesses];
+      newGuesses[turn] = formatedGuess;
+      return newGuesses;
+    });
+    setHistoryGusses((prev) => [...prev, currentGuess]);
+    setTurn((prev) => prev + 1);
+    setCurrentGuess("");
   };
   const handleKeyup = ({ key }: { key: string }) => {
     if (key === "Enter") {
-      setTurn((prev) => prev + 1);
+      // setTurn((prev) => prev + 1);
       setCurrentGuess("");
       if (turn >= 5) {
         console.log("You Have Reached to limit Attempets");
@@ -46,7 +65,8 @@ export const useWorlde = (solution: any) => {
       if (currentGuess.length !== 5) {
         console.log("your word shorter than 5 letters");
       }
-      formatWord();
+      const foramted = formatWord();
+      addNewGuesses(foramted);
     }
 
     if (key === "Backspace") {
@@ -64,5 +84,8 @@ export const useWorlde = (solution: any) => {
   return {
     currentGuess,
     handleKeyup,
+    gusses,
+    isCorrect,
+    turn,
   };
 };
