@@ -27,7 +27,11 @@ const Row = ({
     return (
       <div className="word-box">
         {currentGuessArr.map((letter, index) => {
-          return <div key={index}>{letter}</div>;
+          return (
+            <div key={index} className="current">
+              {letter}
+            </div>
+          );
         })}
         {[...Array(5 - currentGuessArr.length)].map((_, i) => (
           <div key={i}></div>
